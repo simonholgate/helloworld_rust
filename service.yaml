@@ -1,13 +1,14 @@
-apiVersion: serving.knative.dev/v1
+# The hello service provides a load-balancing proxy over the hello-app
+# pods. By specifying the type as a 'LoadBalancer', Kubernetes Engine will
+# create an external HTTP load balancer.
+apiVersion: v1
 kind: Service
 metadata:
-  name: helloworld-rust
-  namespace: default
+  name: hello
 spec:
-  template:
-    spec:
-      containers:
-        - image: docker.io/simonholgate/helloworld-rust
-          env:
-            - name: TARGET
-              value: "Rust Sample v1"
+  type: LoadBalancer
+  selector:
+    app: hello
+  ports:
+  - port: 80
+    targetPort: 8080
